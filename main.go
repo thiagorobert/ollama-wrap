@@ -25,12 +25,11 @@ func runOllamaOnce(ctx context.Context, binaryPath, model, prompt string) (strin
 	// Capture combined stdout+stderr to return/log on failures
 	output, err := cmd.CombinedOutput()
 	str_output := string(output)
-	parts := strings.Split(str_output, "done thinking.")
 	// Remove ANSI escape codes
 	// From https://github.com/acarl005/stripansi/blob/master/stripansi.go
 	const ansi = "[\u001B\u009B][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[a-zA-Z\\d]*)*)?\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PRZcf-ntqry=><~]))"
 	var re = regexp.MustCompile(ansi)
-	cleanedString := re.ReplaceAllString(parts[1], "")
+	cleanedString := re.ReplaceAllString(str_output, "")
 	text := strings.TrimSpace(cleanedString)
 	if err != nil {
 		// Include output in error for debugging
@@ -41,7 +40,7 @@ func runOllamaOnce(ctx context.Context, binaryPath, model, prompt string) (strin
 
 func main() {
 	binary := "/usr/local/bin/ollama"
-	model := "gpt-oss"
+	model := "SmolLM"
 	if b := os.Getenv("OLLAMA_BIN"); b != "" {
 		binary = b
 	}

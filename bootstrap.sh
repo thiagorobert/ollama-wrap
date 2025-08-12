@@ -11,6 +11,8 @@ echo "starting ollama...."
 cd ${LOGS_ROOT}
 ollama serve  2>&1  > ${LOGS_ROOT}/ollama.log &
 sleep 5
+# Baking the model into the image to avoid pulling it during startup.
+# ollama pull SmolLM
 cd -
 
 

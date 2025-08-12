@@ -41,7 +41,7 @@ func TestOllamaWrapper_Query(t *testing.T) {
 
 	model := os.Getenv("OLLAMA_MODEL")
 	if model == "" {
-		model = "gpt-oss"
+		model = "SmolLM"
 	}
 
 	// Log the command we are about to run (mirrors application startup log)

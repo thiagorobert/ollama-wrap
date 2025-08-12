@@ -1,10 +1,9 @@
-FROM ubuntu:22.04
+FROM debian:stable-slim
 
-
-RUN apt update
-RUN apt install -y \
+RUN apt-get update && apt-get install -y \
     python3 \
-    curl
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
 
 # Install a more recent version of Go.
@@ -19,13 +18,9 @@ ENV OLLAMA_ROOT=/ollama
 ENV OLLAMA_MODELS=/ollama/models
 RUN mkdir -p ${OLLAMA_MODELS}
 WORKDIR ${OLLAMA_ROOT}
-COPY data/ollama-linux-amd64.tgz ollama-linux-amd64.tgz
-COPY data/ollama-install.sh ollama-install.sh
-RUN chmod a+rwx ollama-install.sh
-RUN ./ollama-install.sh
-COPY data/models ${OLLAMA_MODELS}
-RUN rm ollama-linux-amd64.tgz
-RUN rm ollama-install.sh
+RUN curl -L -o ollama.tgz https://github.com/ollama/ollama/releases/download/v0.11.4/ollama-linux-amd64.tgz && \
+    tar -xzf ollama.tgz -C /usr/local && \
+    rm ollama.tgz
 
 # Source root directory.
 ENV CODE_ROOT=/go/src/ollama-wrap
@@ -46,6 +41,10 @@ EXPOSE 8081
 ENV LOGS_ROOT=/logs
 RUN mkdir ${LOGS_ROOT}
 RUN chmod a+rwx ${LOGS_ROOT}
+
+
+# Copy SmolLM model into the image.
+COPY data/models ${OLLAMA_MODELS}
 
 
 # Bootsrap.
