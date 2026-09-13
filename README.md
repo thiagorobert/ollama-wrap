@@ -80,9 +80,3 @@ go test ./...
 
 `TestOllamaWrapper_Query` exercises the real `ollama` binary and skips when one
 is not installed.
-
-## Provenance
-
-Most of `main.go` was generated with Cursor and then reviewed and adjusted; the
-Dockerfile and the helper scripts were written by hand. `data/chat-record.md` is
-the original session transcript, kept on purpose.
